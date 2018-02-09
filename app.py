@@ -30,9 +30,11 @@ def make_image(category, width, height):
         return None
 
     img = Image.open(original_image_file_path)
-    img.thumbnail((int(width), int(height)))
+    #img.thumbnail((int(width), int(height)))
+    img = img.resize((int(width), int(height)))
     buf = BytesIO()
     img.save(buf, 'png')
+    img.close()
 
     return buf
 

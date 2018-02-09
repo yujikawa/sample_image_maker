@@ -1,7 +1,7 @@
 import os
 from io import BytesIO
 from flask import Flask, jsonify, helpers
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 app = Flask(__name__)
 
@@ -39,6 +39,8 @@ def make_image(category, width, height):
     :param height:
     :return: Image(byte)
     """
+    width = int(width)
+    height = int(height)
 
     original_image_file_name = "{}.jpg".format(category)
     original_image_file_path = os.path.join("static", category, original_image_file_name)
@@ -46,8 +48,11 @@ def make_image(category, width, height):
         return None
 
     img = Image.open(original_image_file_path)
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.truetype("font/Lovelo Black.otf", int(width/10 + height/10))
+    draw.text((width/10, height/10), "SAMPLE", font=font, fill=(255, 255, 255, 100))
     #img.thumbnail((int(width), int(height)))
-    img = img.resize((int(width), int(height)))
+    img = img.resize((width, height))
     buf = BytesIO()
     img.save(buf, 'png')
     img.close()

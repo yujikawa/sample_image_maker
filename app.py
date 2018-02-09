@@ -1,6 +1,6 @@
 import os
 from io import BytesIO
-from flask import Flask, jsonify, render_template, helpers
+from flask import Flask, jsonify, helpers
 from PIL import Image
 
 app = Flask(__name__)
@@ -8,7 +8,12 @@ app = Flask(__name__)
 
 @app.route("/images/<string:category>/<string:width_height>", methods=['GET'])
 def maker(category, width_height):
-    # requests
+    """
+    Make Sample Image
+    :param category:
+    :param width_height:
+    :return: Content-type=Image
+    """
     (width, height) = width_height.split("x")
     buf = make_image(category, width, height)
     response = helpers.make_response(buf.getvalue())
@@ -18,11 +23,22 @@ def maker(category, width_height):
 
 @app.route("/images/categories", methods=['GET'])
 def category():
-    result = ['human', 'view']
+    """
+    Get Image Categories
+    :return: categories list
+    """
+    result = os.listdir("static")
     return jsonify(categories=result)
 
 
 def make_image(category, width, height):
+    """
+    Make Sample Image(byte)
+    :param category:
+    :param width:
+    :param height:
+    :return: Image(byte)
+    """
 
     original_image_file_name = "{}.jpg".format(category)
     original_image_file_path = os.path.join("static", category, original_image_file_name)

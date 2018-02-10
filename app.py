@@ -2,6 +2,7 @@ import os
 from io import BytesIO
 from flask import Flask, jsonify, helpers
 from PIL import Image, ImageDraw, ImageFont
+import random
 
 app = Flask(__name__)
 
@@ -128,10 +129,21 @@ def _get_original_file(category):
     :param category:
     :return: original_image_file_name, original_image_file_path
     """
-    original_image_file_name = "{}.jpg".format(category)
+    original_image_file_name = _get_random_file(category)
     original_image_file_path = os.path.join(STATIC_IMAGE_PATH, category, original_image_file_name)
     return original_image_file_name, original_image_file_path
 
+def _get_random_file(category):
+    """
+    Get file path randomly
+    :param category:
+    :return: original_image_file_name
+    """
+    original_image_files = os.listdir(os.path.join(STATIC_IMAGE_PATH, category))
+    count_original_image_files = len(original_image_files)
+    random_indexnum_for_pick_file = random.randint(0, (count_original_image_files - 1))
+    original_image_file_name = original_image_files[random_indexnum_for_pick_file]
+    return original_image_file_name
 
 def _make_no_image():
     """

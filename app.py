@@ -16,9 +16,14 @@ def maker_resize(category, width_height):
     :param width_height:
     :return: Content-type=Image
     """
-    (width, height) = width_height.split("x")
-    buf = _make_resize_image(category, width, height)
-    return _make_response(buf)
+    try:
+        (width, height) = width_height.split("x")
+        buf = _make_resize_image(category, width, height)
+        return _make_response(buf)
+    except Exception as e:
+        buf = _make_no_image()
+        return _make_response(buf)
+
 
 
 @app.route("/images/<string:category>", methods=['GET'])
@@ -28,8 +33,13 @@ def maker_original(category):
     :param category:
     :return: Content-type=Image
     """
-    buf = _make_original_image(category)
-    return _make_response(buf)
+    try:
+        buf = _make_original_image(category)
+        return _make_response(buf)
+    except Exception as e:
+        buf = _make_no_image()
+        return _make_response(buf)
+
 
 
 @app.route("/images/categories", methods=['GET'])
@@ -87,7 +97,7 @@ def _make_original_image(category):
     return buf
 
 
-def _make_image_buffer(img):
+def _make_image_buffer(img, text="SAMPLE"):
     """
     Make image buffer
     :param img: PIL
@@ -95,7 +105,7 @@ def _make_image_buffer(img):
     """
     draw = ImageDraw.Draw(img)
     font = ImageFont.truetype("font/Lovelo Black.otf", 30)
-    draw.text((0, 0), "SAMPLE", font=font, fill=(255, 255, 255, 100))
+    draw.text((0, 0), text, font=font, fill=(255, 255, 255, 100))
     buf = BytesIO()
     img.save(buf, 'jpeg')
     return img, buf
@@ -121,6 +131,16 @@ def _get_original_file(category):
     original_image_file_name = "{}.jpg".format(category)
     original_image_file_path = os.path.join(STATIC_IMAGE_PATH, category, original_image_file_name)
     return original_image_file_name, original_image_file_path
+
+
+def _make_no_image():
+    """
+    Make no image
+    :return: buf
+    """
+    img = Image.new("RGB", (512, 512), (128, 128, 128))
+    img, buf = _make_image_buffer(img, "NO IMAGE")
+    return buf
 
 
 if __name__ == "__main__":

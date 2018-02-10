@@ -18,3 +18,10 @@ $ mkdir static/images/dog
 $ cp ~/picture/dog.jpg static/images/dog/dog.jpg
 $ python app.py
 ```
+
+# API doc
+|URI|method|Example|
+|----|-----|-------|
+|http://localhost/images/categories|GET||
+|http://localhost/images/:category|GET|:category = dog|
+|http://localhost/images/:category/:size|GET|:category = dog <br> :size=200x200|

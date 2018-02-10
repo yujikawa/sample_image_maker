@@ -105,7 +105,7 @@ def _make_image_buffer(img, text="SAMPLE"):
     :return: img, buf
     """
     draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("font/Lovelo Black.otf", 30)
+    font = ImageFont.truetype("font/Lovelo Black.otf", int(img.size[1]/10))
     draw.text((0, 0), text, font=font, fill=(255, 255, 255, 100))
     buf = BytesIO()
     img.save(buf, 'jpeg')
@@ -133,6 +133,7 @@ def _get_original_file(category):
     original_image_file_path = os.path.join(STATIC_IMAGE_PATH, category, original_image_file_name)
     return original_image_file_name, original_image_file_path
 
+
 def _get_random_file(category):
     """
     Get file path randomly
@@ -144,6 +145,7 @@ def _get_random_file(category):
     random_indexnum_for_pick_file = random.randint(0, (count_original_image_files - 1))
     original_image_file_name = original_image_files[random_indexnum_for_pick_file]
     return original_image_file_name
+
 
 def _make_no_image():
     """

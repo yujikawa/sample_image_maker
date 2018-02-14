@@ -1,6 +1,7 @@
 # Sample image maker
 
 It is a Web tool to create sample images.
+![result](https://cdn-ak.f.st-hatena.com/images/fotolife/y/yujikawa11/20180210/20180210215411.gif)
 
 # Install
 

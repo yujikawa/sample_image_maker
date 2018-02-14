@@ -1,8 +1,8 @@
 import os
+import random
 from io import BytesIO
 from flask import Flask, jsonify, helpers
 from PIL import Image, ImageDraw, ImageFont
-import random
 
 app = Flask(__name__)
 
@@ -24,7 +24,6 @@ def maker_resize(category, width_height):
     except Exception as e:
         buf = _make_no_image()
         return _make_response(buf)
-
 
 
 @app.route("/images/<string:category>", methods=['GET'])
